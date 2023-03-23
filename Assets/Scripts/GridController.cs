@@ -24,7 +24,6 @@ public class GridController : MonoBehaviour
                 Vector3 newWorldPosition = new Vector3(originPosition.x + row, originPosition.y, originPosition.z - column);
                // grid[row, column] = new Piece(newWorldPosition, new Vector2(row, column));
             
-
                // Instantiate(piecePrefab, grid[row, column].GetPosition(), Quaternion.identity);
             }
         }
