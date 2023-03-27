@@ -11,7 +11,7 @@ public class GridController : MonoBehaviour
     private Vector3 originPosition;
 
     // This script will manage the grid of pieces
-    private int[,] grid = new int[8, 8];
+    private Piece [,] grid = new Piece[8, 8];
 
     // Start is called before the first frame update
     void Start()
@@ -20,11 +20,11 @@ public class GridController : MonoBehaviour
         {
             for (int column = 0; column < grid.GetLength(1); column++)
             {
-                
                 Vector3 newWorldPosition = new Vector3(originPosition.x + row, originPosition.y, originPosition.z - column);
-               // grid[row, column] = new Piece(newWorldPosition, new Vector2(row, column));
+
+                grid[row, column] = new Piece(newWorldPosition, new Vector2(row, column));
             
-               // Instantiate(piecePrefab, grid[row, column].GetPosition(), Quaternion.identity);
+               Instantiate(piecePrefab, grid[row, column].GetPosition(), Quaternion.identity);
             }
         }
     }
