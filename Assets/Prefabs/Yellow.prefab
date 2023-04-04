@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 6287889024996286603}
   - component: {fileID: 3033200187543919293}
   - component: {fileID: 8729275789507290692}
+  - component: {fileID: 8325491203751656028}
+  - component: {fileID: 974029535137572663}
   m_Layer: 0
   m_Name: Yellow
   m_TagString: Yellow
@@ -85,3 +87,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8325491203751656028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6996421289144341144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c9e32ba49db4874b90b3682cacb7b23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &974029535137572663
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6996421289144341144}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0.020543098, y: -0.018392503, z: -0.006389439}
