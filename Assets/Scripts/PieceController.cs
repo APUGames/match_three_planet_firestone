@@ -57,6 +57,7 @@ public class PieceController : MonoBehaviour
             controller.pressedUpGameObject = this.gameObject;
 
             //controller.ValidMove(controller.pressedDownPosition, seedPiece);
+            controller.validMoveInProcess= true;
         }
     }
 

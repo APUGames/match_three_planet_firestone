@@ -28,6 +28,8 @@ public class GridController : MonoBehaviour
     public Vector2 pressedUpPosition;
     public GameObject pressedUpGameObject;
 
+    public bool validMoveInProcess = false;
+
 
     // This script will manage the grid of pieces
     private Piece [,] grid = new Piece[8, 8];
@@ -122,6 +124,16 @@ public class GridController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (validMoveInProcess)
+        {
+            Vector3 placeHolderPosition = pressedDownGameObject.transform.position;
+            pressedDownGameObject.transform.position = pressedUpGameObject.transform.position;
+            pressedUpGameObject.transform.position = placeHolderPosition;
+
+            validMoveInProcess = false;
+
+        }
         
+
     }
 }
