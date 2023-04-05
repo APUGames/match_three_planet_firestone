@@ -8,7 +8,7 @@ public class PieceController : MonoBehaviour
 {
     private Piece piece;
 
-   /* private void LateUpdate()
+    private void LateUpdate()
     {
         GridController controller = GameObject.Find("GameManager").GetComponent<GridController>();
         if (controller.IsDestroyed(piece.GetGridPosition()))
@@ -16,7 +16,7 @@ public class PieceController : MonoBehaviour
             Destroy(gameObject);
         }
     }
-   */
+   
     private void OnMouseDown()
     {
         Debug.Log("mouse is down");

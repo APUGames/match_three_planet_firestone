@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 
-public class GridController : MonoBehaviour
+public class GridController : MonoBehaviour// all but ui
 {
     [SerializeField]
     private GameObject piecePrefabBlue;
@@ -27,6 +27,9 @@ public class GridController : MonoBehaviour
     public GameObject pressedDownGameObject;
     public Vector2 pressedUpPosition;
     public GameObject pressedUpGameObject;
+
+    private Vector2 startMovementPiecePosition;
+    private Vector2 endMovementPiecePosition;
 
     public bool validMoveInProcess = false;
 
@@ -126,14 +129,68 @@ public class GridController : MonoBehaviour
     {
         if (validMoveInProcess)
         {
+            //visual layer
             Vector3 placeHolderPosition = pressedDownGameObject.transform.position;
             pressedDownGameObject.transform.position = pressedUpGameObject.transform.position;
             pressedUpGameObject.transform.position = placeHolderPosition;
 
+            //data to match visual
+            Piece placeHolderPiece = grid[(int)endMovementPiecePosition.x, (int)endMovementPiecePosition.y];
+            grid[(int)endMovementPiecePosition.x, (int)endMovementPiecePosition.y] = grid[(int)startMovementPiecePosition.x, (int)startMovementPiecePosition.y];
+            grid[(int)startMovementPiecePosition.x, (int)startMovementPiecePosition.y] = placeHolderPiece;
+
             validMoveInProcess = false;
 
-        }
-        
+            //do the matches found thing
 
+        }
+        // mtches found thing sring
+
+    }
+    public void ValidMove(Vector2 start, Vector2 end)
+    {
+        Debug.Log("validating start (" + start.x + ", " + start.y + ") | end (" + end.x + ", " + end.y + ")");
+        startMovementPiecePosition = start;
+        endMovementPiecePosition = end;
+
+        bool matchFound = false;
+
+        if (!matchFound)
+        {
+            try
+            {
+                Piece topPiece1 = grid[(int)end.x, (int)end.y - 1];
+                Piece bottomPiece1 = grid[(int)end.x, (int)end.y + 1];
+                Debug.Log("Top piece type: " + topPiece1.GetPieceType());
+                Debug.Log("Bottom piece type: " + bottomPiece1.GetPieceType());
+                Piece midPiece1 = grid[(int)start.x, (int)start.y];
+                Piece toDestroy1 = grid[(int)end.x, (int)end.y];
+                Debug.Log("Mid piece type: " + midPiece1.GetPieceType());
+                if (topPiece1.GetPieceType() == bottomPiece1.GetPieceType())
+                {
+                    if (topPiece1.GetPieceType() == midPiece1.GetPieceType())
+                    {
+                        matchFound = true;
+                        validMoveInProcess = true;
+                        topPiece1.SetForDestruction();
+                        bottomPiece1.SetForDestruction();
+                        toDestroy1.SetForDestruction();
+                        Debug.Log("======= MATCHED =======");
+                    }
+                }
+            }
+            catch (IndexOutOfRangeException)  
+            {
+               
+            }
+        }
+
+        Debug.Log("not valid move");
+    }
+
+    public bool IsDestroyed(Vector2 gridPosition)
+    {
+        Piece piece = grid[(int)gridPosition.x, (int)gridPosition.y];
+        return piece.GetDestruction();
     }
 }
