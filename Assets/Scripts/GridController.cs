@@ -149,30 +149,82 @@ public class GridController : MonoBehaviour// all but ui
 
             matchesFound += 1;
 
-            //do the matches found thing
 
         }
-        // mtches found thing sring
+        //matchesFoundText.GetComponent<Text>().text = matchesFound.ToString();
 
     }
+    private Piece GetGridPiece(int row, int column)
+    {
+        Piece foundPiece;
+        try
+        {
+            foundPiece = grid[row, column];
+            if (foundPiece == null || foundPiece.GetDestruction())
+            {
+                return null;
+            }
+
+            return foundPiece;
+        }
+        catch (IndexOutOfRangeException)  // CS0168
+        {
+            // Catch IndexOutOfRangeException when the grid is asked to retrieve a
+            // piece from an unknown location.
+        }
+
+        return null;
+    }
+
+    private Piece GetGridPiece(int row, int column, bool isDestroyed)
+    {
+        Piece foundPiece;
+        try
+        {
+            foundPiece = grid[row, column];
+            if (foundPiece == null)
+            {
+                return null;
+            }
+
+            if (!isDestroyed)
+            {
+                return null;
+            }
+
+            return foundPiece;
+        }
+        catch (IndexOutOfRangeException)  // CS0168
+        {
+            // Catch IndexOutOfRangeException when the grid is asked to retrieve a
+            // piece from an unknown location.
+        }
+
+        return null;
+    }
+
     public void ValidMove(Vector2 start, Vector2 end)
     {
         Debug.Log("validating start (" + start.x + ", " + start.y + ") | end (" + end.x + ", " + end.y + ")");
         startMovementPiecePosition = start;
         endMovementPiecePosition = end;
 
+        // Using this boolean value to not do subsequent matches
         bool matchFound = false;
 
         if (!matchFound)
         {
+            // Get type of piece based on start position
+            // and check for neighboring pieces of the
+            // same type below and above the end position
             try
             {
-                Piece topPiece1 = grid[(int)end.x, (int)end.y - 1];
-                Piece bottomPiece1 = grid[(int)end.x, (int)end.y + 1];
+                Piece topPiece1 = GetGridPiece((int)end.x, (int)end.y - 1);
+                Piece bottomPiece1 = GetGridPiece((int)end.x, (int)end.y + 1);
                 Debug.Log("Top piece type: " + topPiece1.GetPieceType());
                 Debug.Log("Bottom piece type: " + bottomPiece1.GetPieceType());
-                Piece midPiece1 = grid[(int)start.x, (int)start.y];
-                Piece toDestroy1 = grid[(int)end.x, (int)end.y];
+                Piece midPiece1 = GetGridPiece((int)start.x, (int)start.y);
+                Piece toDestroy1 = GetGridPiece((int)end.x, (int)end.y);
                 Debug.Log("Mid piece type: " + midPiece1.GetPieceType());
                 if (topPiece1.GetPieceType() == bottomPiece1.GetPieceType())
                 {
@@ -187,9 +239,130 @@ public class GridController : MonoBehaviour// all but ui
                     }
                 }
             }
-            catch (IndexOutOfRangeException)  
+            catch (NullReferenceException)
             {
-               
+                // Object reference not set to an instance of an object
+            }
+        }
+
+        if (!matchFound)
+        {
+            // Checking for pattern of moving up or down and having
+            // two matching types on the left
+            try
+            {
+                Piece leftPiece = GetGridPiece((int)end.x - 1, (int)end.y);
+                Piece leftLeftPiece = GetGridPiece((int)end.x - 2, (int)end.y);
+                Piece checkPiece1 = GetGridPiece((int)start.x, (int)start.y);
+                if (leftPiece.GetPieceType() == leftLeftPiece.GetPieceType())
+                {
+                    if (leftPiece.GetPieceType() == checkPiece1.GetPieceType())
+                    {
+                        matchFound = true;
+                        validMoveInProcess = true;
+                        Piece toDestroy2 = grid[(int)end.x, (int)end.y];
+
+                        leftPiece.SetForDestruction();
+                        leftLeftPiece.SetForDestruction();
+                        toDestroy2.SetForDestruction();
+                        Debug.Log("======= MATCHED =======");
+                    }
+                }
+            }
+            catch (NullReferenceException)
+            {
+                // Object reference not set to an instance of an object
+            }
+        }
+
+        if (!matchFound)
+        {
+            // Checking for pattern of moving up or down and having
+            // two matching types on the right
+            try
+            {
+                Piece rightPiece = GetGridPiece((int)end.x + 1, (int)end.y);
+                Piece rightRightPiece = GetGridPiece((int)end.x + 2, (int)end.y);
+                Piece checkPiece2 = GetGridPiece((int)start.x, (int)start.y);
+                if (rightPiece.GetPieceType() == rightRightPiece.GetPieceType())
+                {
+                    if (rightPiece.GetPieceType() == checkPiece2.GetPieceType())
+                    {
+                        matchFound = true;
+                        validMoveInProcess = true;
+                        Piece toDestroy2 = GetGridPiece((int)end.x, (int)end.y);
+
+                        rightPiece.SetForDestruction();
+                        rightRightPiece.SetForDestruction();
+                        toDestroy2.SetForDestruction();
+                        Debug.Log("======= MATCHED =======");
+                    }
+                }
+            }
+            catch (NullReferenceException)
+            {
+                // Object reference not set to an instance of an object
+            }
+        }
+
+        if (!matchFound)
+        {
+            // Checking for pattern of moving up or down and having
+            // two matching types on either side
+            try
+            {
+                Piece rightPiece = GetGridPiece((int)end.x + 1, (int)end.y);
+                Piece leftPiece = GetGridPiece((int)end.x - 1, (int)end.y);
+                Piece checkPiece3 = GetGridPiece((int)start.x, (int)start.y);
+                if (rightPiece.GetPieceType() == leftPiece.GetPieceType())
+                {
+                    if (rightPiece.GetPieceType() == checkPiece3.GetPieceType())
+                    {
+                        matchFound = true;
+                        validMoveInProcess = true;
+                        Piece toDestroy2 = GetGridPiece((int)end.x, (int)end.y);
+
+                        rightPiece.SetForDestruction();
+                        leftPiece.SetForDestruction();
+                        toDestroy2.SetForDestruction();
+                        Debug.Log("======= MATCHED =======");
+                    }
+                }
+            }
+            catch (NullReferenceException)
+            {
+                // Object reference not set to an instance of an object
+            }
+        }
+
+        if (!matchFound)
+        {
+            // Checking for pattern of moving up, down, left, or right and having
+            // two matching types above
+            try
+            {
+                Piece abovePiece = GetGridPiece((int)end.x, (int)end.y + 1);
+                Piece aboveAbovePiece = GetGridPiece((int)end.x, (int)end.y + 2);
+                Piece checkPiece4 = GetGridPiece((int)start.x, (int)start.y);
+                if (abovePiece.GetPieceType() == aboveAbovePiece.GetPieceType())
+                {
+                    if (abovePiece.GetPieceType() == checkPiece4.GetPieceType())
+                    {
+                        matchFound = true;
+                        validMoveInProcess = true;
+                        Piece toDestroy2 = GetGridPiece((int)end.x, (int)end.y);
+
+                        abovePiece.SetForDestruction();
+                        aboveAbovePiece.SetForDestruction();
+                        toDestroy2.SetForDestruction();
+
+                        Debug.Log("======= MATCHED =======");
+                    }
+                }
+            }
+            catch (NullReferenceException)
+            {
+                // Object reference not set to an instance of an object
             }
         }
 
@@ -198,22 +371,11 @@ public class GridController : MonoBehaviour// all but ui
 
     public bool IsDestroyed(Vector2 gridPosition)
     {
-        Piece piece = grid[(int)gridPosition.x, (int)gridPosition.y];
-        return piece.GetDestruction();
-    }
-    /*
-    public void SetPlayerScore (int newScore)
-    {
-        newScore =+1;
-    }
-
-    string CreatePlayerDefaultName()
-    {
-        if (!string.IsNullOrEmpty(name))
+        Piece piece = GetGridPiece((int)gridPosition.x, (int)gridPosition.y, true);
+        if (piece != null)
         {
-            return name;
+            return piece.GetDestruction();
         }
-        return "";
+        return false;
     }
-    */
 }
