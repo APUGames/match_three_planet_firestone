@@ -33,6 +33,12 @@ public class GridController : MonoBehaviour// all but ui
 
     public bool validMoveInProcess = false;
 
+    [Header("UI")]
+    [SerializeField]
+    private GameObject matchesFoundText;
+
+    private int matchesFound;
+
 
     // This script will manage the grid of pieces
     private Piece [,] grid = new Piece[8, 8];
@@ -140,6 +146,8 @@ public class GridController : MonoBehaviour// all but ui
             grid[(int)startMovementPiecePosition.x, (int)startMovementPiecePosition.y] = placeHolderPiece;
 
             validMoveInProcess = false;
+
+            matchesFound += 1;
 
             //do the matches found thing
 
