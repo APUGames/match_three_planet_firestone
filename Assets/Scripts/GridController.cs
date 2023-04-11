@@ -201,4 +201,19 @@ public class GridController : MonoBehaviour// all but ui
         Piece piece = grid[(int)gridPosition.x, (int)gridPosition.y];
         return piece.GetDestruction();
     }
+    /*
+    public void SetPlayerScore (int newScore)
+    {
+        newScore =+1;
+    }
+
+    string CreatePlayerDefaultName()
+    {
+        if (!string.IsNullOrEmpty(name))
+        {
+            return name;
+        }
+        return "";
+    }
+    */
 }

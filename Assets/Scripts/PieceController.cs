@@ -59,6 +59,8 @@ public class PieceController : MonoBehaviour
             //controller.ValidMove(controller.pressedDownPosition, seedPiece);
             controller.validMoveInProcess= true;
         }
+       // controller.SetPlayerScore(0);
+
     }
 
     public void SetPiece(Piece piece)
