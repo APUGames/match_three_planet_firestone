@@ -56,8 +56,8 @@ public class PieceController : MonoBehaviour
             controller.pressedUpPosition = seedPiece;
             controller.pressedUpGameObject = this.gameObject;
 
-            //controller.ValidMove(controller.pressedDownPosition, seedPiece);
-            controller.validMoveInProcess= true;
+            controller.ValidMove(controller.pressedDownPosition, seedPiece);
+           // controller.validMoveInProcess= true;
         }
        // controller.SetPlayerScore(0);
 
