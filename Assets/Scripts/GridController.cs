@@ -253,7 +253,7 @@ public class GridController : MonoBehaviour// all but ui
             }
         }
 
-       /* if (!matchFound)
+        if (!matchFound)
         {
             // Checking for pattern of moving up or down and having
             // two matching types on the left
@@ -282,7 +282,7 @@ public class GridController : MonoBehaviour// all but ui
                 // Object reference not set to an instance of an object
             }
         }
-
+        /*
         if (!matchFound)
         {
             // Checking for pattern of moving up or down and having
