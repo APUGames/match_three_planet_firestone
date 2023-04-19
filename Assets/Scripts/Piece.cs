@@ -47,6 +47,10 @@ public class Piece   //this is all up to date
     {
         this.setForDestruction = true;
     }
+    public void SetForDestruction(bool value)
+    {
+        this.setForDestruction = value;
+    }
 
     public void SetPieceType(PieceTypes pieceType)
     {
